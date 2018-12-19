@@ -45,6 +45,42 @@ namespace App5
             Finish();
         }
 
+        const int WRONG_CHAR = 1, OK = 0, CAPITAL_E = 2, NUM_E = 3, SPECIAL_E = 4;
+        private int IsPasswordOk(string password)
+        {
+            foreach (char c in password)
+            {
+                if (!"qwertyuiopasdfghjklzxcvbnmQWERTYUIOPASDFGHJKLZXCVBNM1234567890".Contains(c))
+                {
+                    return WRONG_CHAR;
+                }
+            }
+            if(!password.Any(x => "QWERTYUIOPASDFGHJKLZXCVBNM".Contains(x)))
+            {
+                return CAPITAL_E;
+            }
+            if (!password.Any(x => "0123456789".Contains(x)))
+            {
+                return NUM_E;
+            }
+            if (!password.Any(x => "!@#$%^&*()+-*/".Contains(x)))
+            {
+                return SPECIAL_E;
+            }
+            return OK;
+        }
+
+        private int IsLoginOk(string login)
+        {
+            foreach (char c in login)
+            {
+                if (!"qwertyuiopasdfghjklzxcvbnmQWERTYUIOPASDFGHJKLZXCVBNM1234567890".Contains(c))
+                {
+                    return WRONG_CHAR;
+                }
+            }
+            return OK;
+        }
 
         private void OnReg(object sender, EventArgs e)
         {
