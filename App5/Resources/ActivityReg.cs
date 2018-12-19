@@ -50,5 +50,17 @@ namespace App5
         {
 
         }
+
+        async private void SendPostAndHandleAnswerReg(string login, string password)
+        {
+            Dictionary<string, string> data = new Dictionary<string, string>
+            {
+                { "username" , login },
+                { "password" , password }
+            };
+         
+        }
+
+
     }
 }

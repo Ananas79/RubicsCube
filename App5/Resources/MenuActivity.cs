@@ -85,5 +85,26 @@ namespace App5
             GetFormulaAndShow();
            
         }
+        
+       
+        async private void GetFormulaAndShow()
+        {
+            HttpClient client = new HttpClient();
+            HttpRequestMessage request = new HttpRequestMessage();
+            request.RequestUri = new Uri("http://bayan79.pythonanywhere.com/load");
+            request.Method = HttpMethod.Get;
+            
+            HttpResponseMessage response = await client.GetAsync(request.RequestUri);
+
+            string answer = await response.Content.ReadAsStringAsync();
+
+            while (answer == "") ;
+
+            Intent intent = new Intent(this, typeof(Cube));
+            intent.PutExtra("type", "server");
+            intent.PutExtra("server", answer);
+            StartActivity(intent);
+        }
+
     }
 }

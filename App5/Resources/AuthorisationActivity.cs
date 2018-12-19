@@ -75,6 +75,23 @@ namespace App5
                     login.Text = data.GetStringExtra("login");
                     password.Text = data.GetStringExtra("password");
                 }
-        }       
+        }
+
+        async private void SendPostAndHandleAnswerEnter(string login, string password, bool is_entered)
+        {
+            Dictionary<string, string> data = new Dictionary<string, string>
+            {
+                { "username" , login },
+                { "password" , password },
+                { "is_entered", is_entered.ToString() }
+            };
+            HttpClient client = new HttpClient();
+            HttpRequestMessage request = new HttpRequestMessage();
+            request.RequestUri = new Uri("http://bayan79.pythonanywhere.com/login");
+            request.Method = HttpMethod.Post;
+
+        }
+
+       
     }
 }
