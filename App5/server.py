@@ -47,3 +47,33 @@ def check_password(user_login, user_password):
 @app.route('/', methods=['POST'])
 def hello_world():
     return 'Hello World!' + str(ourUser.scalar()) #+ str(ourUser in session)
+
+
+def valid_login(login, password, is_entered):
+    if user_exists(login):
+        if is_entered == 'True':
+            return 'Already entered'
+        elif check_password(login, password):
+            return 'Enter allowed'
+        return 'Wrong password'
+    else:
+        return 'No user'
+
+
+@app.route('/login', methods=['POST'])
+def log_in():
+    return valid_login(request.values['username'], request.values['password'], request.values['is_entered'])
+    # the code below is executed if the request method
+    # was GET or the credentials were invalid
+
+
+@app.route('/reg', methods=['POST'])
+def reg():
+    if user_exists(request.values['username']):
+        return 'Exists'
+    else:
+        user = User(request.values['username'], request.values['password'])
+        session.add(user)
+        return 'Reged'
+    # the code below is executed if the request method
+    # was GET or the credentials were invalid
