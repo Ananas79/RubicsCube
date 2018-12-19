@@ -63,6 +63,14 @@ namespace App5
 
         bool is_entered = false;
 
+        private void OnButtonClickLogin(object sender, EventArgs e)
+        {
+            //Intent intent = new Intent(this, typeof(MainActivity));
+            Intent intent = new Intent(this, typeof(AuthorisationActivity));
+            intent.PutExtra("is_entered", is_entered);
+            StartActivityForResult(intent, 4);
+        }
+
         protected override void OnActivityResult(int requestCode, [GeneratedEnum] Result resultCode, Intent data)
         {
             base.OnActivityResult(requestCode, resultCode, data);
