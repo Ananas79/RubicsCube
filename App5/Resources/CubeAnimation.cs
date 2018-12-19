@@ -717,7 +717,8 @@ namespace App5
 
         public void SolveCurrentState()
         {
-        	
+            CubeSolver cs = new CubeSolver(state);
+            formulas = cs.GetSolution().ToArray();
         }
 
         private List<KeyValuePair<List<int>, int>> partsToRot = new List<KeyValuePair<List<int>, int>>();
