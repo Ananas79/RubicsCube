@@ -76,6 +76,7 @@ namespace App5
             switch (item.ItemId)
             {
                 case Resource.Id.share:
+                    SendPostFormula(CubeSolver.Zip(String.Join(" ", new CubeSolver(cb.state).GetSolution())));
                     return true;
             }
             return base.OnContextItemSelected(item);

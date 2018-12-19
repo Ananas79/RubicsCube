@@ -739,6 +739,51 @@ namespace App5
             DoFormula(formulaBuffer);
         }
 
+        public static string Zip(string formula)
+        {
+            return formula
+                .Replace("R " , "a")
+                .Replace("Rz ", "b")
+                .Replace("R2 ", "c")
+                .Replace("L " , "d")
+                .Replace("Lz ", "e")
+                .Replace("L2 ", "f")
+                .Replace("F " , "g")
+                .Replace("Fz ", "h")
+                .Replace("F2 ", "j")
+                .Replace("B " , "k")
+                .Replace("Bz ", "l")
+                .Replace("B2 ", "m")
+                .Replace("D " , "n")
+                .Replace("Dz ", "o")
+                .Replace("D2 ", "p")
+                .Replace("U " , "q")
+                .Replace("Uz ", "r")
+                .Replace("U2 ", "s");
+        }
+
+        public static string Unzip(string formula)
+        {
+            return formula
+                .Replace("a", "R ")
+                .Replace("b", "Rz ")
+                .Replace("c", "R2 ")
+                .Replace("d", "L ")
+                .Replace("e", "Lz ")
+                .Replace("f", "L2 ")
+                .Replace("g", "F ")
+                .Replace("h", "Fz ")
+                .Replace("j", "F2 ")
+                .Replace("k", "B ")
+                .Replace("l", "Bz ")
+                .Replace("m", "B2 ")
+                .Replace("n", "D ")
+                .Replace("o", "Dz ")
+                .Replace("p", "D2 ")
+                .Replace("q", "U ")
+                .Replace("r", "Uz ")
+                .Replace("s", "U2 ");
+        }
         public static string Backward(string forward)
         {
             return String.Join(" ",
