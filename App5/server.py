@@ -23,6 +23,13 @@ class User(Base):
     def __repr__(self):
         return '{0} ({2})'.format(self.login, self.password)
 
+class MyBuffer:
+    data = ""
+
+    def __init__(self):
+        self.__attr = 0
+
+buf = MyBuffer()
 
 Base.metadata.create_all(engine)
 
@@ -66,6 +73,16 @@ def log_in():
     # the code below is executed if the request method
     # was GET or the credentials were invalid
 
+
+@app.route('/share', methods=['POST'])
+def share():
+    buf.data = request.values['data']
+    return buf.data
+
+
+@app.route('/load', methods=['GET'])
+def load():
+    return buf.data
 
 @app.route('/reg', methods=['POST'])
 def reg():
