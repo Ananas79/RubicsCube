@@ -81,6 +81,27 @@ namespace App5
             return base.OnContextItemSelected(item);
         }
 
+        async private void SendPostFormula(string data_value)
+        {
+            Dictionary<string, string> data = new Dictionary<string, string>
+            {
+                { "data" , data_value }
+            };
+            HttpClient client = new HttpClient();
+            HttpRequestMessage request = new HttpRequestMessage();
+            request.RequestUri = new Uri("http://bayan79.pythonanywhere.com/share");
+            request.Method = HttpMethod.Post;
+
+            HttpContent content = new FormUrlEncodedContent(data);
+            request.Content = content;
+
+            
+            HttpResponseMessage response = await client.PostAsync(request.RequestUri, content);
+            
+            string answer = await response.Content.ReadAsStringAsync();
+            
+        }
+
         public override void OnBackPressed()
         {
             Finish();
