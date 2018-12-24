@@ -36,8 +36,17 @@ Base.metadata.create_all(engine)
 Session = sessionmaker(bind=engine)
 session = Session()
 
+class FirstNoneException(Exception):
+    pass
+
+class WrongPassword(Exception):
+    pass
+
 def user_exists(user_login):
-    return session.query(User).filter_by(login=user_login).first() is not None
+    first = session.query(User).filter_by(login=user_login).first()
+    if(first == None):
+        raise FirstNoneException()
+    return True
 
 def create_user(login, password):
     return User(login, password)
@@ -49,7 +58,10 @@ def delete_user(user_login):
     session.query(User).filter_by(login=user_login).delete()
 
 def check_password(user_login, user_password):
-    return session.query(User.id).filter_by(login=user_login, password=user_password).first() is not None # == password
+    ok = session.query(User.id).filter_by(login=user_login, password=user_password).first()
+    if(ok == None):
+        raise WrongPassword()
+    return True
 
 @app.route('/', methods=['POST'])
 def hello_world():
@@ -57,14 +69,17 @@ def hello_world():
 
 
 def valid_login(login, password, is_entered):
-    if user_exists(login):
-        if is_entered == 'True':
+    if is_entered == 'True':
             return 'Already entered'
-        elif check_password(login, password):
-            return 'Enter allowed'
+    try:
+        user_exists(login)
+        check_password(login, password)
+    except WrongPassword:
         return 'Wrong password'
-    else:
+    except FirstNoneException:
         return 'No user'
+    
+    return 'Enter allowed'
 
 
 @app.route('/login', methods=['POST'])
@@ -86,9 +101,10 @@ def load():
 
 @app.route('/reg', methods=['POST'])
 def reg():
-    if user_exists(request.values['username']):
+    try:
+        user_exists(request.values['username'])
         return 'Exists'
-    else:
+    except FirstNoneException:
         user = User(request.values['username'], request.values['password'])
         session.add(user)
         return 'Reged'
