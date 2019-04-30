@@ -13,6 +13,7 @@ using Android.Widget;
 using Java.IO;
 using Java.Net;
 using System.Net;
+using System.Text.RegularExpressions;
 
 namespace App5
 {
@@ -50,13 +51,11 @@ namespace App5
         {
             if (login.Length < 6 || login.Length > 20)
                 return MAX_LENGTH;
-            foreach (char c in login)
-            {
-                if (!"qwertyuiopasdfghjklzxcvbnmQWERTYUIOPASDFGHJKLZXCVBNM1234567890".Contains(c))
+            Regex reg = new Regex (@"\w*");
+            if (!Regex.IsMatch(login , reg))
                 {
                     return WRONG_CHAR;
                 }
-            }
             return OK;
         }
 
