@@ -62,8 +62,34 @@ namespace App5
         private void OnReg(object sender, EventArgs e)
         {
 
+            switch (IsOk(password.Text))
+            {
+                case MAX_LENGTH:
+                    Title = "Длина пароля : от 6 до 20";
+                    return;
+                case WRONG_CHAR:
+                    Title = "Символы пароля: a-z, A-Z, 0-9";
+                    return;
+            }
+            switch (IsOk(login.Text))
+            {
+                case MAX_LENGTH:
+                    Title = "Длина логина : от 6 до 20";
+                    break;
+                case WRONG_CHAR:
+                    Title = "Символы логина: a-z, A-Z, 0-9";
+                    break;
+                case OK:
+                    if (password.Text == repassword.Text)
+                    {
+                        Title = "Регистрация";
+                        SendPostAndHandleAnswerReg(login.Text, password.Text);
+                    }
+                    else
+                        Title = "Пароли не совпадают";
+                    break;
+            }
         }
-
         async private void SendPostAndHandleAnswerReg(string login, string password)
         {
             Dictionary<string, string> data = new Dictionary<string, string>
@@ -71,7 +97,29 @@ namespace App5
                 { "username" , login },
                 { "password" , password }
             };
-         
+            HttpClient client = new HttpClient();
+            HttpRequestMessage request = new HttpRequestMessage();
+            request.RequestUri = new Uri("http://bayan79.pythonanywhere.com/reg");
+            request.Method = HttpMethod.Post;
+
+            HttpContent content = new FormUrlEncodedContent(data);
+            request.Content = content;
+
+
+            HttpResponseMessage response = await client.PostAsync(request.RequestUri, content);
+            string answer = await response.Content.ReadAsStringAsync();
+
+            while (answer == "") ;
+
+            switch (answer)
+            {
+                case "Exists":
+                    Title = $"{login} уже зарегистрирован";
+                    break;
+                case "Reged":
+                    Title = $"Новый пользователь: {login}!";
+                    break;
+            }
         }
 
 

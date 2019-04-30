@@ -68,7 +68,28 @@ namespace App5
         
         private void OnEnter(object sender, EventArgs e)
         {
-         
+            switch (IsOk(password.Text))
+            {
+                case MAX_LENGTH:
+                    Title = "Длина пароля : от 6 до 20";
+                    return;
+                case WRONG_CHAR:
+                    Title = "Символы пароля: a-z, A-Z, 0-9";
+                    return;
+            }
+            switch (IsOk(login.Text))
+            {
+                case MAX_LENGTH:
+                    Title = "Длина логина : от 6 до 20";
+                    break;
+                case WRONG_CHAR:
+                    Title = "Символы логина: a-z, A-Z, 0-9";
+                    break;
+                case OK:
+                    Title = "Вход";
+                    SendPostAndHandleAnswerEnter(login.Text, password.Text, is_entered);
+                    break;
+            }
         }
 
         private void OnReg(object sender, EventArgs e)
@@ -102,6 +123,34 @@ namespace App5
             request.RequestUri = new Uri("http://bayan79.pythonanywhere.com/login");
             request.Method = HttpMethod.Post;
 
+            HttpContent content = new FormUrlEncodedContent(data);
+            request.Content = content;
+
+
+            HttpResponseMessage response = await client.PostAsync(request.RequestUri, content);
+            string answer = await response.Content.ReadAsStringAsync();
+
+            while (answer == "") ;
+
+            switch (answer)
+            {
+                case "Already entered":
+                    Title = "Вход уже выполнен!";
+                    break;
+                case "Enter allowed":
+                    Title = "Вход выполнен успешно";
+                    is_entered = true;
+                    break;
+                case "Wrong password":
+                    Title = "Неправильный пароль";
+                    break;
+                case "No user":
+                    Title = $"Пользователя {login} нет";
+                    break;
+                default:
+                    Title = $"|{answer}|";
+                    break;
+            }
         }
 
        
