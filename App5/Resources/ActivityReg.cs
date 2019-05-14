@@ -49,10 +49,8 @@ namespace App5
         const int MAX_LENGTH = 2, WRONG_CHAR = 1, OK = 0;
         private int IsOk(string login)
         {
-            if (login.Length < 6 || login.Length > 20)
-                return MAX_LENGTH;
-            Regex reg = new Regex (@"\w*");
-            if (!Regex.IsMatch(login , reg))
+            
+            if (!Regex.IsMatch(login ,(@"\w*{6,20}")))
                 {
                     return WRONG_CHAR;
                 }
